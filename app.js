@@ -47,7 +47,12 @@ function generateRandomString() {
   }
   return result;
 }
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+
 app.use(bodyParser.json());
 // Get Token (Use after submitting)
 app.get("/googleapi/getauth", (req, res) => {
