@@ -47,11 +47,7 @@ function generateRandomString() {
   }
   return result;
 }
-app.use(
-  cors({
-    origin: "https://inbot.com.br/google-agenda-sucesso/",
-  })
-);
+app.use(cors());
 app.use(bodyParser.json());
 // Get Token (Use after submitting)
 app.get("/googleapi/getauth", (req, res) => {
