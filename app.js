@@ -159,6 +159,34 @@ app.get("/googleapi/gettoken", async (req, res) => {
   }
 });
 
+app.delete("/googleapi/delete", async (req, res) => {
+  try {
+    const auth = await checkAuthentication(req);
+    if (!auth) {
+      return res.json({
+        status: 400,
+        success: false,
+        message: "Invalid Token",
+      });
+    }
+    sql = "DELETE FROM tokens WHERE id=?";
+    const queryObject = url.parse(req.url, true).query; // Query Parameters
+    if (!queryObject.id) {
+      return res.json({
+        status: 400,
+        success: false,
+        message: "Query Param id invalid",
+      });
+    }
+    db.run(sql, [queryObject.id], (err) => {
+      if (err) return res.json({ status: 300, success: false, error: err });
+      return res.json({ status: 200, message: `Id ${queryObject.id} has been deleted`, success: true });
+    });
+  } catch (error) {
+    return res.json({ status: 500, success: false, error: error.message });
+  }
+});
+
 app.listen(3000, () => {
   console.log("I'm listening...");
 });
