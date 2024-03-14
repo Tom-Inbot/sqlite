@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const app = express();
 const url = require("url");
 const { jwtDecode } = require("jwt-decode");
+const cors = require("cors");
 
 const sqlite = require("sqlite3").verbose();
 const db = new sqlite.Database(
@@ -46,7 +47,11 @@ function generateRandomString() {
   }
   return result;
 }
-
+app.use(
+  cors({
+    origin: "https://inbot.com.br/google-agenda-sucesso/",
+  })
+);
 app.use(bodyParser.json());
 // Get Token (Use after submitting)
 app.get("/googleapi/getauth", (req, res) => {
@@ -75,7 +80,8 @@ app.get("/googleapi/getauth", (req, res) => {
         res.json({
           status: 200,
           sucess: true,
-          message: authtoken,
+          message: "",
+          token: authtoken,
         });
       }
     });
@@ -114,6 +120,7 @@ app.post("/googleapi/subirtoken", async (req, res) => {
     res.json({
       status: 200,
       sucess: true,
+      email: decoded.email,
     });
   } catch (error) {
     return res.json({
@@ -151,4 +158,6 @@ app.get("/googleapi/gettoken", async (req, res) => {
   }
 });
 
-app.listen(3000);
+app.listen(3000, () => {
+  console.log("I'm listening...");
+});
