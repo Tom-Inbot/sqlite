@@ -49,7 +49,7 @@ function generateRandomString() {
 }
 app.use(
   cors({
-    origin: "*",
+    origin: "https://inbot.com.br/google-agenda-sucesso/",
   })
 );
 
